@@ -12,7 +12,7 @@ La carpeta:
 
     - > codigo_09
 
-        Carpeta donde se encuentra el archivo de python "codigo_inciso9" donde se llevó a cabo la programación del inciso 9. También se encuentran los .ply descargados del sitio de Princetos y los .obj generados por el código.
+        Carpeta donde se encuentra el archivo de python "codigo_inciso9" donde se llevó a cabo la programación del inciso 9. También se encuentran los .ply descargados del sitio de Princeton y los .obj generados por el código.
 
     - > extras_09
 
