@@ -32,3 +32,14 @@ La carpeta:
 
 
 ## Estructura Inciso 10)
+La carpeta:
+>inciso_10
+
+- Contiene el código fuente "poligono_aproximado.py", imágenes de prueba y ejemplos de polígonos aproximados obtenidos. Sus carpetas internas son:
+    - > 2D-dataset
+      
+      Carpeta que ontiene todas las imágenes en 2D que pueden ser utilizadas al correr el programa "poligono_aproximado.py"
+
+    - > ejemplos_poligonos_aproximados
+
+        Carpeta que contiene ejemplos de algunos poligonos aproximados obtenidos del programa "poligono_aproximado.py".
