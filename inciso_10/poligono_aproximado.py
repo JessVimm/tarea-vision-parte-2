@@ -43,9 +43,7 @@ class ContornoAF8:
         self.img = binaria
 
 
-    # -------------------------------------------------
-    # 1. CONTORNO CON OPENCV
-    # -------------------------------------------------
+    # CONTORNO 
     def obtener_contorno(self):
         # Extrae el contorno externo más grande de la imagen binaria
 
@@ -63,10 +61,6 @@ class ContornoAF8:
 
         return contorno, len(contorno)
 
-
-    # -------------------------------------------------
-    # 2. DIRECCIÓN F8
-    # -------------------------------------------------
     def direccion(self, p1, p2):
         # Calcula la dirección entre dos puntos usando el esquema de 8 direcciones
 
@@ -90,9 +84,6 @@ class ContornoAF8:
         return direcciones[(dx, dy)]
 
 
-    # -------------------------------------------------
-    # 3. F8  AF8
-    # -------------------------------------------------
     def obtener_AF8(self, contorno):
         # Convierte el contorno en una cadena de direcciones y su representación diferencial (AF8)
 
@@ -113,17 +104,8 @@ class ContornoAF8:
 
         return cadena, AF8
 
-
-    # -------------------------------------------------
-    # 5. DETECTAR BREAK POINTS
-    # -------------------------------------------------
     def detectar_breakpoints_greedy(self, AF8, max_p=None, max_q=None, max_r=None):
         # Detecta puntos de quiebre en la secuencia AF8 usando un enfoque voraz basado en patrones
-
-        """
-        AF8: lista de enteros en [0..7]
-        max_p, max_q, max_r: límites opcionales (None = sin límite)
-        """
 
         n = len(AF8)
         breakpoints = []
@@ -627,13 +609,19 @@ if __name__ == "__main__":
     proc.config["max_q"] = int(0.005 * n / T)
     proc.config["max_r"] = int(0.01 * n / T)
         
-    # 1. vuelve a obtener el contorno 
+    # -------------------------------------------------
+    # PASO 1: obtener contorno
+    # -------------------------------------------------
     contorno, n = proc.obtener_contorno()
 
-    # 2. calcula la representación AF8 del contorno
+    # -------------------------------------------------
+    # PASO 2: calcular AF8
+    # -------------------------------------------------
     AF8_simbolos, AF8_num = proc.obtener_AF8(contorno)
 
-    # 3. detecta breakpoints iniciales usando el método basado en CFG
+    # -------------------------------------------------
+    # PASO 3: detectar breakpoints iniciales (CFG)
+    # -------------------------------------------------
     bps = proc.detectar_breakpoints_greedy(
         AF8_num,
         proc.config["max_p"],
@@ -641,16 +629,24 @@ if __name__ == "__main__":
         proc.config["max_r"]
     )
 
-    # 4. refina los breakpoints dividiendo segmentos que no cumplen el criterio
+    # -------------------------------------------------
+    # PASO 4: refinamiento de breakpoints
+    # -------------------------------------------------
     bps_ref = proc.refinar_breakpoints(contorno, bps)
 
-    # 5. elimina puntos innecesarios manteniendo la calidad de aproximación
+    # -------------------------------------------------
+    # PASO 5: eliminación de puntos innecesarios
+    # -------------------------------------------------
     bps_final = proc.eliminar_puntos(contorno, bps_ref)
 
-    # (OPCIONAL) alternativa usando camino más corto en lugar de eliminación
+    # -------------------------------------------------
+    # PASO 6 (opcional): shortest path en lugar de eliminación
+    # -------------------------------------------------
     #bps_final = proc.shortest_path_circular(contorno)
 
-    # 7. calcula métricas de calidad del resultado
+    # -------------------------------------------------
+    # PASO 7: cálculo de métricas
+    # -------------------------------------------------
     FOM, ISE, DP = proc.calcular_FOM(contorno, bps_final)
 
     # Muestra resultados en consola
@@ -660,7 +656,9 @@ if __name__ == "__main__":
     print("ISE:", ISE)
     print("FOM:", FOM)
 
-    # 8. genera la imagen final con contorno, puntos y polígono
+    # -------------------------------------------------
+    # PASO 8: visualización final
+    # -------------------------------------------------
     img = proc.dibujar_completo(contorno, bps_final)
 
     # Muestra la imagen en una ventana
